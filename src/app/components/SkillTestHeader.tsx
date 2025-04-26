@@ -52,7 +52,7 @@ const SkillTestHeader = ({
           <div>
             <h2 className="text-xl font-bold mb-1">Hyper Text Markup Language</h2>
             <p className="text-gray-600">
-              Questions: 08 | Duration: 15 mins | Submitted on 5 June 2021
+              Questions: 15 | Duration: 15 mins | Submitted on 26 may 2025
             </p>
           </div>
         </div>
