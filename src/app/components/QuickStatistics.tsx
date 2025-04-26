@@ -6,7 +6,7 @@ interface QuickStatisticsProps {
   
   const QuickStatistics = ({ rank, percentile, score }: QuickStatisticsProps) => {
     return (
-      <div className="w-full max-w-2xl  bg-white rounded-lg shadow-sm p-4 mb-6">
+      <div className=" bg-white rounded-lg shadow-sm p-4 mb-6">
         <h3 className="text-lg font-bold mb-2">Quick Statistics</h3>
         <div className="flex justify-between">
           

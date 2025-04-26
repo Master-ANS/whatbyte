@@ -43,7 +43,7 @@ const SkillTestHeader = ({
   };
 
   return (
-    <div className="w-full max-w-2xl  bg-white rounded-lg shadow-sm p-6 mb-6">
+    <div className= "bg-white rounded-lg shadow-sm p-6 mb-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className="mr-4">
