@@ -2,13 +2,32 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Modal from './Modal';
+import QuickStatistics from './QuickStatistics';
+import {Dispatch , SetStateAction} from "react"
 
 
-const SkillTestHeader = () => {
+interface SkillTestHeaderProps {
+    rank: number;
+    setRank: Dispatch<SetStateAction<number>>;
+    percentile: number;
+    setPercentile: Dispatch<SetStateAction<number>>;
+    score: number;
+    setScore: Dispatch<SetStateAction<number>>;
+  }
+
+
+const SkillTestHeader = ({
+    rank,
+    setRank,
+    percentile,
+    setPercentile,
+    score,
+    setScore,
+  }: SkillTestHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [rank, setRank] = useState<number>(1);
-  const [percentile, setPercentile] = useState<number>(30);
-  const [score, setScore] = useState<number>(10);
+//   const [rank, setRank] = useState<number>(1);
+//   const [percentile, setPercentile] = useState<number>(30);
+//   const [score, setScore] = useState<number>(10);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,7 +38,7 @@ const SkillTestHeader = () => {
   };
 
   const handleSave = () => {
-     
+    
     closeModal();
   };
 
