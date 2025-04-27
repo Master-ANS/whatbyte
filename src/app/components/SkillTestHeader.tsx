@@ -1,10 +1,7 @@
 "use client"
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, FormEvent, Dispatch, SetStateAction } from 'react';
 import Modal from './Modal';
-import QuickStatistics from './QuickStatistics';
-import {Dispatch , SetStateAction} from "react"
-
 
 interface SkillTestHeaderProps {
     rank: number;
@@ -13,8 +10,7 @@ interface SkillTestHeaderProps {
     setPercentile: Dispatch<SetStateAction<number>>;
     score: number;
     setScore: Dispatch<SetStateAction<number>>;
-  }
-
+}
 
 const SkillTestHeader = ({
     rank,
@@ -23,133 +19,105 @@ const SkillTestHeader = ({
     setPercentile,
     score,
     setScore,
-  }: SkillTestHeaderProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-//   const [rank, setRank] = useState<number>(1);
-//   const [percentile, setPercentile] = useState<number>(30);
-//   const [score, setScore] = useState<number>(10);
+}: SkillTestHeaderProps) => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+    const [tempRank, setTempRank] = useState<number>(rank);
+    const [tempPercentile, setTempPercentile] = useState<number>(percentile);
+    const [tempScore, setTempScore] = useState<number>(score);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+    const openModal = () => {
+        setTempRank(rank);
+        setTempPercentile(percentile);
+        setTempScore(score);
+        setIsModalOpen(true);
+    };
 
-  const handleSave = () => {
-    
-    closeModal();
-  };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
-  return (
-    <div className= "bg-white rounded-lg shadow-sm p-6 mb-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center">
-          <div className="mr-4">
-            <Image src="/HTML5.png" alt="HTML5 Logo" width={50} height={40}/>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold mb-1">Hyper Text Markup Language</h2>
-            <p className="text-gray-600">
-              Questions: 15 | Duration: 15 mins | Submitted on 26 may 2025
-            </p>
-          </div>
+    const handleFormSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        setRank(tempRank);
+        setPercentile(tempPercentile);
+        setScore(tempScore);
+        closeModal();
+    };
+
+    return (
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                    <div className="mr-4">
+                        <Image src="/HTML5.png" alt="HTML5 Logo" width={50} height={40} />
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold mb-1">Hyper Text Markup Language</h2>
+                        <p className="text-gray-600">
+                            Questions: 15 | Duration: 15 mins | Submitted on 26 May 2025
+                        </p>
+                    </div>
+                </div>
+                <button
+                    className="bg-blue-900 hover:bg-blue-900 text-white font-medium py-2 px-4 rounded"
+                    onClick={openModal}
+                    type="button"
+                >
+                    Update
+                </button>
+            </div>
+
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold">Update scores</h2>
+                    <Image src="/HTML5.png" alt="HTML5 Logo" width={40} height={40} />
+                </div>
+
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                    {/* Field */}
+                    {[
+                        { id: 1, label: "Update your Rank", value: tempRank, setValue: setTempRank },
+                        { id: 2, label: "Update your Percentile", value: tempPercentile, setValue: setTempPercentile },
+                        { id: 3, label: "Update current score", value: tempScore, setValue: setTempScore }
+                    ].map((field) => (
+                        <div key={field.id} className="flex items-center space-x-4">
+                            <div className="bg-blue-700 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm">
+                                {field.id}
+                            </div>
+                            <label className="text-gray-700 font-semibold whitespace-nowrap">
+                                {field.label}
+                            </label>
+                            <input
+                                type="number"
+                                value={field.value === 0 ? "" : field.value}
+                                onChange={(e) => field.setValue(e.target.value === "" ? 0 : Number(e.target.value))}
+                                className="border border-gray-300 rounded-md p-1 px-2 w-24 ml-auto focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            />
+                        </div>
+                    ))}
+
+                    {/* Buttons */}
+                    <div className="flex justify-end space-x-4 mt-8">
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="px-6 py-2 border border-gray-300 rounded-md font-semibold text-gray-700 hover:bg-gray-100"
+                        >
+                            cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-6 py-2 bg-blue-900 hover:bg-blue-900 text-white rounded-md font-semibold flex items-center space-x-2"
+                        >
+                            <span>save</span>
+
+                        </button>
+                    </div>
+                </form>
+            </Modal>
         </div>
-        <button 
-          className="bg-blue-900 hover:bg-blue-900 text-white font-medium py-2 px-4 rounded"
-          onClick={openModal}
-        >
-          Update
-        </button>
-      </div>
-
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-  <div className="flex justify-between items-center mb-6">
-    <h2 className="text-2xl font-bold">Update scores</h2>
-    <Image src="/HTML5.png" alt="HTML5 Logo" width={40} height={40} />
-  </div>
-
-  <div className="space-y-6">
-    
-    <div className="flex items-center">
-      <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3">
-        <span>1</span>
-      </div>
-      <label className="block flex-grow">
-        <span className="text-gray-700 font-medium">Update your Rank</span>
-        <input
-          type="number"
-          value={rank}
-          onChange={(e) => setRank(Number(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
-        />
-      </label>
-    </div>
-
-    
-    <div className="flex items-center">
-      <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3">
-        <span>2</span>
-      </div>
-      <label className="block flex-grow">
-        <span className="text-gray-700 font-medium">Update your Percentile</span>
-        <input
-          type="number"
-          value={percentile}
-          onChange={(e) => setPercentile(Number(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
-        />
-      </label>
-    </div>
-
-    {/* Score Input */}
-    <div className="flex items-center">
-      <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3">
-        <span>3</span>
-      </div>
-      <label className="block flex-grow">
-        <span className="text-gray-700 font-medium">Update your Current Score (out of 15)</span>
-        <input
-          type="number"
-          value={score}
-          onChange={(e) => setScore(Number(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
-        />
-      </label>
-    </div>
-  </div>
-
-  <div className="flex justify-end space-x-4 mt-8">
-    <button
-      onClick={closeModal}
-      className="px-6 py-2 border border-gray-300 rounded-md font-medium"
-    >
-      cancel
-    </button>
-    <button
-      onClick={handleSave}
-      className="px-6 py-2 bg-blue-900 text-white rounded-md font-medium flex items-center"
-    >
-      save
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="h-5 w-5 ml-2" 
-        viewBox="0 0 20 20" 
-        fill="currentColor"
-      >
-        <path 
-          fillRule="evenodd" 
-          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
-          clipRule="evenodd" 
-        />
-      </svg>
-    </button>
-  </div>
-</Modal>
-
-    </div>
-  );
+    );
 };
 
 export default SkillTestHeader;

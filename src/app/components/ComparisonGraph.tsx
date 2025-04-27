@@ -46,7 +46,6 @@ const ComparisonGraph = ({ percentile }: ComparisonGraphParams) => {
         display: false,
       },
       tooltip: {
-        // Disable default tooltips for the graph data
         enabled: false,
       },
       annotation: {
@@ -68,23 +67,17 @@ const ComparisonGraph = ({ percentile }: ComparisonGraphParams) => {
               },
               display: true
             },
-            // Make the line interactive
             drawTime: 'afterDatasetsDraw',
             z: 100,
-            // This is the key part - creating a custom tooltip just for the line
             enter: (context) => {
-              // Show custom tooltip on enter
               const chart = context.chart;
               const ctx = chart.ctx;
               
-              // Position for tooltip
               const x = context.element.x;
-              const y = context.element.y / 2; // Position it halfway up
+              const y = context.element.y / 2; 
               
-              // Clear any previous tooltip
               ctx.save();
               
-              // Draw tooltip background
               ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
               ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
               ctx.lineWidth = 1;
@@ -101,11 +94,10 @@ const ComparisonGraph = ({ percentile }: ComparisonGraphParams) => {
               
               ctx.restore();
               
-              // Force a redraw
               chart.draw();
             },
             leave: (context) => {
-              // Force a redraw to remove tooltip
+              
               context.chart.draw();
             }
           },
@@ -130,22 +122,18 @@ const ComparisonGraph = ({ percentile }: ComparisonGraphParams) => {
         }
       },
     },
-    // Use hover handler for better control
     onHover: (event: any, elements, chart) => {
       if (!chart || !chart.canvas) return;
       
-      // Get the mouse position safely
       const nativeEvent = event.native as MouseEvent;
       if (!nativeEvent) return;
       
       const rect = chart.canvas.getBoundingClientRect();
       const x = nativeEvent.offsetX || (nativeEvent.clientX - rect.left);
       
-      // Get the x value from the scale
       const xScale = chart.scales.x;
       const percentilePosition = xScale.getPixelForValue(percentile);
       
-      // Check if hovering near the vertical line
       if (Math.abs(x - percentilePosition) < 10) {
         chart.canvas.style.cursor = 'pointer';
       } else {
