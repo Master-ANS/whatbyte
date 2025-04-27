@@ -10,7 +10,7 @@ interface QuickStatisticsProps {
         <h3 className="text-lg font-bold mb-2">Quick Statistics</h3>
         <div className="flex justify-between">
           
-          {/* Rank */}
+         
           <div className="flex items-center ">
             <div className="bg-yellow-50 p-3 rounded-full mr-4">
               <span className="text-yellow-500 text-xl">🏆</span>
@@ -21,7 +21,7 @@ interface QuickStatisticsProps {
             </div>
           </div>
   
-          {/* Percentile */}
+          
           <div className="flex items-center">
             <div className="bg-gray-50 p-3 rounded-full mr-4">
               <span className="text-gray-400 text-xl">📋</span>
@@ -32,7 +32,7 @@ interface QuickStatisticsProps {
             </div>
           </div>
   
-          {/* Score */}
+          
           <div className="flex items-center">
             <div className="bg-green-50 p-3 rounded-full mr-4">
               <span className="text-green-500 text-xl">✅</span>

@@ -53,8 +53,7 @@ import {
         <p className="text-gray-700 mb-6">
           <span className="font-bold">You scored {score} question{score !== 1 && 's'} correct out of 15.</span> However it still needs some improvements.
         </p>
-        
-        {/* Centered Chart */}
+
         <div className="flex justify-center items-center">
           <div className="w-60 h-60">
             <Doughnut data={data} options={options} />

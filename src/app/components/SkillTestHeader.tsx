@@ -1,7 +1,10 @@
-"use client"
-import Image from 'next/image';
-import { useState, FormEvent, Dispatch, SetStateAction } from 'react';
-import Modal from './Modal';
+
+"use client";
+
+import Image from "next/image";
+import { useState, FormEvent, Dispatch, SetStateAction } from "react";
+import Modal from "./Modal";
+import { formSchema } from "../Schemas/ZodValidation"; 
 
 interface SkillTestHeaderProps {
     rank: number;
@@ -37,8 +40,20 @@ const SkillTestHeader = ({
         setIsModalOpen(false);
     };
 
-    const handleFormSubmit = (e: FormEvent) => {
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const result = formSchema.safeParse({
+            rank: tempRank,
+            percentile: tempPercentile,
+            score: tempScore,
+        });
+
+        if (!result.success) {
+            alert(result.error.errors[0].message);
+            return;
+        }
+
         setRank(tempRank);
         setPercentile(tempPercentile);
         setScore(tempScore);
@@ -75,11 +90,10 @@ const SkillTestHeader = ({
                 </div>
 
                 <form onSubmit={handleFormSubmit} className="space-y-6">
-                    {/* Field */}
                     {[
                         { id: 1, label: "Update your Rank", value: tempRank, setValue: setTempRank },
                         { id: 2, label: "Update your Percentile", value: tempPercentile, setValue: setTempPercentile },
-                        { id: 3, label: "Update current score", value: tempScore, setValue: setTempScore }
+                        { id: 3, label: "Update current score", value: tempScore, setValue: setTempScore },
                     ].map((field) => (
                         <div key={field.id} className="flex items-center space-x-4">
                             <div className="bg-blue-700 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm">
@@ -89,15 +103,14 @@ const SkillTestHeader = ({
                                 {field.label}
                             </label>
                             <input
-                                type="number"
-                                value={field.value === 0 ? "" : field.value}
-                                onChange={(e) => field.setValue(e.target.value === "" ? 0 : Number(e.target.value))}
-                                className="border border-gray-300 rounded-md p-1 px-2 w-24 ml-auto focus:outline-none focus:ring-2 focus:ring-blue-300"
-                            />
+                type="number"
+                value={field.value === undefined ? 0 : field.value}
+                onChange={(e) => field.setValue(e.target.value === undefined ? 0 : e.target.value === "0" ? 0 : Number(e.target.value))}
+                className="border border-gray-300 rounded-md p-1 px-2 w-24 ml-auto focus:outline-none focus:ring-2 focus:ring-blue-300"
+              />
                         </div>
                     ))}
 
-                    {/* Buttons */}
                     <div className="flex justify-end space-x-4 mt-8">
                         <button
                             type="button"
@@ -111,7 +124,6 @@ const SkillTestHeader = ({
                             className="px-6 py-2 bg-blue-900 hover:bg-blue-900 text-white rounded-md font-semibold flex items-center space-x-2"
                         >
                             <span>save</span>
-
                         </button>
                     </div>
                 </form>
